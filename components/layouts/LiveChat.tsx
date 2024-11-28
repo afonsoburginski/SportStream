@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import EmotePicker from "@/components/EmotePicker";
@@ -30,11 +31,30 @@ export default function LiveChat({
   setMessage,
 }: LiveChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [socket, setSocket] = useState<Socket | null>(null);
   const username = "Afonso";
+  const room = "game-room-1"; // Replace with dynamic room ID if needed.
+
+  useEffect(() => {
+    const socketInstance = io("http://localhost:3000/api/socket");
+    setSocket(socketInstance);
+
+    socketInstance.emit("join_room", room);
+
+    socketInstance.on("receive_message", (data: ChatMessage) => {
+      setMessages((prev) => [...prev, data]);
+    });
+
+    return () => {
+      socketInstance.disconnect();
+    };
+  }, [room]);
 
   const handleSendMessage = () => {
-    if (message.trim() !== "") {
-      setMessages((prev) => [...prev, { user: username, text: message }]);
+    if (message.trim() !== "" && socket) {
+      const newMessage = { user: username, text: message };
+      socket.emit("send_message", { ...newMessage, room });
+      setMessages((prev) => [...prev, newMessage]);
       setMessage("");
     }
   };
@@ -48,7 +68,7 @@ export default function LiveChat({
         <div className="flex items-center justify-center gap-2 p-2">
           <SidebarTrigger side="right" />
           <span className="flex-1 truncate font-medium text-center">
-            Chat da Transmissão
+            Live Chat
           </span>
         </div>
       </SidebarHeader>
@@ -103,7 +123,7 @@ function ChatInputBase({
 }) {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // Evita a quebra de linha
+      e.preventDefault();
       onSendMessage();
     }
   };
@@ -112,7 +132,7 @@ function ChatInputBase({
     <div className="bg-muted/10 border-t border-muted flex items-center gap-2 p-2">
       <div className="relative w-full">
         <Textarea
-          placeholder="Digite sua mensagem..."
+          placeholder="Type your message..."
           className="pr-12"
           value={message}
           onChange={(e) => setMessage(e.target.value)}

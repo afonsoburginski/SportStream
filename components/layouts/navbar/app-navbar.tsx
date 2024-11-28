@@ -2,36 +2,35 @@
 
 import * as React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Search,
   Sparkles,
   Home,
-  Inbox,
+  Inbox
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+  PopoverTrigger }
+  from "@/components/ui/popover";
+  import {
+    Avatar,
+    AvatarImage,
+    AvatarFallback
+  } from "@/components/ui/avatar";
+  import {
+    Sidebar,
+    SidebarContent,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+  } from "@/components/ui/sidebar";
+  import { Input } from "@/components/ui/input";
+  import { Button } from "@/components/ui/button";
+  import { Separator } from "@/components/ui/separator";
 
 const data = {
   team: {
@@ -69,13 +68,15 @@ export function AppNavbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-10 flex h-12 items-center gap-2 bg-sidebar shadow-black border-b-[1px]">
       <div className="flex flex-1 items-center gap-2 px-3">
-        <Image
-          src={data.team.logoUrl}
-          alt={data.team.name}
-          width={82}
-          height={82}
-          className="rounded-md object-cover"
-        />
+        <Link href="/" className="flex items-center">
+          <Image
+            src={data.team.logoUrl}
+            alt={data.team.name}
+            width={32}
+            height={32}
+            className="rounded-md object-cover"
+          />
+        </Link>
         <Separator orientation="vertical" className="mr-2 h-4" />
         <div className="flex flex-1 justify-center">
           <div className="w-full max-w-md">
