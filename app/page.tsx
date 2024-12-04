@@ -39,11 +39,11 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col flex-1 overflow-hidden max-w-screen mx-auto"> {/* Limita largura total */}
+    <div className="flex flex-col flex-1 overflow-hidden max-w-screen mx-auto">
       <div className="w-full h-80 bg-muted/10 rounded-lg flex items-center justify-center">
         <CarouselComponent />
       </div>
-      <div className="flex flex-col gap-8 px-4 py-6 w-full max-w-screen"> {/* Limita largura das listas */}
+      <div className="flex flex-col gap-8 px-4 py-6 w-full max-w-screen">
         {liveFixtures.length > 0 && (
           <FixturesList
             title="AO VIVO"
