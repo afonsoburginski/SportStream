@@ -33,7 +33,7 @@ export default function LiveChat({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [socket, setSocket] = useState<Socket | null>(null);
   const username = "Afonso";
-  const room = "game-room-1"; // Replace with dynamic room ID if needed.
+  const room = "game-room-1";
 
   useEffect(() => {
     const socketInstance = io("http://localhost:3000/api/socket");
@@ -67,13 +67,13 @@ export default function LiveChat({
       <SidebarHeader>
         <div className="flex items-center justify-center gap-2 p-2">
           <SidebarTrigger side="right" />
-          <span className="flex-1 truncate font-medium text-center">
-            Live Chat
+          <span className="flex-1 truncate text-xs text-center">
+            CHAT DA TRANSMISSÃO
           </span>
         </div>
       </SidebarHeader>
       <SidebarContent className="flex flex-1 flex-col min-h-0 overflow-hidden gap-0">
-        <ChatBody messages={messages} />
+        <ChatBody messages={messages} isLoading={!socket} />
         <ChatInputBase
           onEmoteSelect={onEmoteSelect}
           message={message}
@@ -86,16 +86,16 @@ export default function LiveChat({
   );
 }
 
-function ChatBody({ messages }: { messages: ChatMessage[] }) {
+function ChatBody({
+  messages,
+  isLoading,
+}: {
+  messages: ChatMessage[];
+  isLoading: boolean;
+}) {
   return (
     <div className="flex-1 overflow-y-auto bg-muted/30 p-2 rounded-lg">
-      {messages.length > 0 ? (
-        messages.map((msg, index) => (
-          <div key={index} className="p-2 bg-muted/10 rounded-lg mb-2">
-            <strong className="text-primary">{msg.user}:</strong> {msg.text}
-          </div>
-        ))
-      ) : (
+      {isLoading && messages.length > 0 ? (
         Array.from({ length: 10 }).map((_, index) => (
           <div key={index} className="flex items-center gap-4">
             <Skeleton className="w-10 h-10 rounded-full" />
@@ -105,6 +105,16 @@ function ChatBody({ messages }: { messages: ChatMessage[] }) {
             </div>
           </div>
         ))
+      ) : messages.length > 0 ? (
+        messages.map((msg, index) => (
+          <div key={index} className="p-2 bg-muted/10 rounded-lg mb-2">
+            <strong className="text-primary">{msg.user}:</strong> {msg.text}
+          </div>
+        ))
+      ) : (
+        <div className="text-sm text-muted-foreground text-center py-4">
+          Nenhuma mensagem no chat.
+        </div>
       )}
     </div>
   );

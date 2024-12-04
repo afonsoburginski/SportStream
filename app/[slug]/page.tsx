@@ -14,7 +14,6 @@ export default function WatchPage() {
 
   const { fixtures, teams } = useSportsData();
 
-  // Encontra o jogo pelo ID nos fixtures
   const game = fixtures.find((fixture) => fixture.id === gameId);
 
   const teamA = game
@@ -41,33 +40,8 @@ export default function WatchPage() {
   return (
     <SidebarProvider>
       <div className="flex flex-1 h-full">
-        <div className="flex flex-1 flex-col">
-          <VideoPlayer slug={game.match} />
-          <div className="flex items-center justify-between p-4 bg-muted/10">
-            {teamA && (
-              <div className="flex items-center gap-4">
-                <img
-                  src={teamA.logoUrl}
-                  alt={teamA.name}
-                  className="w-10 h-10 object-contain"
-                />
-                <span className="font-bold">{teamA.name}</span>
-              </div>
-            )}
-            <span className="text-lg font-bold">
-              {game.score || "VS"}
-            </span>
-            {teamB && (
-              <div className="flex items-center gap-4">
-                <span className="font-bold">{teamB.name}</span>
-                <img
-                  src={teamB.logoUrl}
-                  alt={teamB.name}
-                  className="w-10 h-10 object-contain"
-                />
-              </div>
-            )}
-          </div>
+        <div className="flex flex-1">
+          <VideoPlayer slug={game.match} score={game.score} teamA={teamA} teamB={teamB} />
         </div>
         <LiveChat
           onEmoteSelect={handleEmoteSelect}

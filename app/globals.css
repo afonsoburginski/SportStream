@@ -109,3 +109,13 @@ body {
 html {
   scrollbar-width: none;
 }
+
+
+/* Adicione durante os testes */
+.scrollbar-visible {
+  scrollbar-width: auto;
+}
+
+.scrollbar-visible::-webkit-scrollbar {
+  display: block;
+}
