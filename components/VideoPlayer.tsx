@@ -2,8 +2,9 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import Image from "next/image"; // Importando o componente Image do Next.js
+import Image from "next/image";
 import { useState } from "react";
+import ReactPlayer from "react-player"; // Importando o React Player
 
 interface VideoPlayerProps {
   slug: string;
@@ -16,11 +17,11 @@ interface VideoPlayerProps {
     name: string;
     logoUrl: string;
   };
+  liveStreamUrl?: string; // Link do stream ao vivo
 }
 
-export default function VideoPlayer({ slug, score, teamA, teamB }: VideoPlayerProps) {
+export default function VideoPlayer({ slug, score, teamA, teamB, liveStreamUrl }: VideoPlayerProps) {
   const [showTitle, setShowTitle] = useState(true);
-  const videoId = ""; // Insira o ID do vídeo.
 
   return (
     <Card
@@ -36,7 +37,7 @@ export default function VideoPlayer({ slug, score, teamA, teamB }: VideoPlayerPr
               <Image
                 src={teamA.logoUrl}
                 alt={teamA.name}
-                width={28} // Reduzido para deixar mais clean
+                width={28}
                 height={28}
                 className="object-contain"
               />
@@ -62,14 +63,19 @@ export default function VideoPlayer({ slug, score, teamA, teamB }: VideoPlayerPr
         </div>
       )}
       <CardContent className="flex flex-1 items-center justify-center p-0">
-        <iframe
-          className="w-full h-full"
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0`}
-          title={`Assistindo ${slug}`}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
+        {liveStreamUrl ? (
+          <ReactPlayer
+            url={liveStreamUrl}
+            playing={true}
+            controls={true}
+            width="100%"
+            height="100%"
+          />
+        ) : (
+          <div className="flex items-center justify-center w-full h-full text-center text-gray-500">
+            Nenhuma transmissão ao vivo disponível para este jogo.
+          </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -276,6 +276,18 @@ export const teams = [
   { id: 20, name: "Borussia Dortmund", logoUrl: "https://media.api-sports.io/football/teams/20.png", country: "Germany" },
 ];
 
+export const videoStreams = [
+  { fixtureId: 1, url: "https://stream.example.com/team-a-vs-team-b" },
+  { fixtureId: 2, url: "https://stream.example.com/team-c-vs-team-d" },
+  { fixtureId: 5, url: "https://stream.example.com/team-i-vs-team-j" },
+  { fixtureId: 13, url: "https://stream.example.com/team-f-vs-team-g" },
+];
+
+export function getVideoStreamByFixtureId(fixtureId: number) {
+  const stream = videoStreams.find((video) => video.fixtureId === fixtureId);
+  return stream ? stream.url : null;
+}
+
 export function getFixtureById(id: number) {
   return fixtures.find((fixture) => fixture.id === id) || null;
 }
